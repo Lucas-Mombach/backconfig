@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+# O 'kind: Location' diz ao Backstage para tratar este arquivo como um índice
+# para outras definições de entidades.
+kind: Location
+metadata:
+  name: sms-mes-repo-locations
+  description: Um arquivo de localização para importar todas as entidades do sistema SMS MES Equipment Definitions para o catálogo do Backstage.
+spec:
+  # Os 'targets' são os caminhos para os seus outros arquivos YAML,
+  # relativos à localização deste arquivo (a raiz do repositório).
+  # Estou assumindo que você criou uma pasta chamada 'catalog' para eles.
+  targets:
+    - ./catalog/org.yaml
+    - ./catalog/system.yaml
+    - ./catalog/components.yaml
