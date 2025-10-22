@@ -1,0 +1,22 @@
+# org.yaml
+---
+# Define o time que aparece como "Authors" nos arquivos de projeto
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: mes-revamp-team
+  description: Time responsável pelo desenvolvimento do MES
+spec:
+  type: team
+  children: []
+
+---
+# Exemplo de um usuário que pertence a esse time
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: john.doe
+spec:
+  memberOf: [mes-revamp-team]

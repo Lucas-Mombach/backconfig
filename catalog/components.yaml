@@ -1,0 +1,87 @@
+# components.yaml
+---
+# Componente principal: a API Web. É do tipo 'service'.
+# Derivado de: SMS.MES.EquipmentDefinitions.API.csproj 
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sms-mes-equipment-definitions-api
+  description: Ponto de entrada da API para o sistema de Definições de Equipamentos
+spec:
+  type: service
+  lifecycle: production
+  owner: mes-revamp-team
+  system: equipment-definitions
+  # Define que este componente expõe uma API
+  providesApis: [equipment-definitions-api]
+  # Define a dependência com a camada de aplicação, conforme o .csproj 
+  dependsOn:
+    - component:default/sms-mes-equipment-definitions-application
+
+---
+# Entidade da API que é exposta pelo serviço acima
+# O projeto usa Swashbuckle, então o tipo é openapi 
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: equipment-definitions-api
+  description: API para gerenciar Definições de Equipamentos
+spec:
+  type: openapi
+  lifecycle: production
+  owner: mes-revamp-team
+  system: equipment-definitions
+  # O Backstage pode carregar a definição da API diretamente daqui
+  definition:
+    $text: ./openapi.yaml
+
+---
+# Componente da camada de Aplicação. É do tipo 'library'.
+# Derivado de: SMS.MES.EquipmentDefinitions.Application.csproj [cite: 11]
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sms-mes-equipment-definitions-application
+  description: Camada de aplicação contendo a lógica de negócio
+spec:
+  type: library
+  lifecycle: production
+  owner: mes-revamp-team
+  system: equipment-definitions
+  # Depende tanto da camada de Dados quanto da de Domínio [cite: 11]
+  dependsOn:
+    - component:default/sms-mes-equipment-definitions-data-efcore
+    - component:default/sms-mes-equipment-definitions-domain
+
+---
+# Componente da camada de Infraestrutura/Dados. É do tipo 'library'.
+# Derivado de: SMS.MES.EquipmentDefinitions.Data.EFCore.csproj [cite: 1]
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sms-mes-equipment-definitions-data-efcore
+  description: Camada de infraestrutura para acesso a dados com Entity Framework Core
+spec:
+  type: library
+  lifecycle: production
+  owner: mes-revamp-team
+  system: equipment-definitions
+  # Depende da camada de Domínio [cite: 1]
+  dependsOn:
+    - component:default/sms-mes-equipment-definitions-domain
+
+---
+# Componente da camada de Domínio. É do tipo 'library'.
+# Derivado de: SMS.MES.EquipmentDefinitions.Domain.csproj [cite: 3]
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sms-mes-equipment-definitions-domain
+  description: Camada de domínio com as entidades e regras principais do negócio
+spec:
+  type: library
+  lifecycle: production
+  owner: mes-revamp-team
+  system: equipment-definitions
+  # O domínio não deve depender de outras camadas
+  dependsOn: []
